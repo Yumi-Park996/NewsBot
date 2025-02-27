@@ -68,28 +68,35 @@ class Monitoring_news {
         }
     }
 
-    // JSON 응답을 파싱하고 HTML 형식으로 변환하여 반환
-    private String parseNewsToHtml(String jsonResponse) {
+        // JSON 응답을 파싱하고 HTML 형식으로 변환하여 반환
+        private String parseNewsToHtml(String jsonResponse) {
         JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
         JsonArray items = jsonObject.getAsJsonArray("items");
-
+    
         StringBuilder newsHtml = new StringBuilder();
-        newsHtml.append("<h2>🔹 자동 뉴스 모니터링 결과</h2>");
-
+        newsHtml.append("<html><head>");
+        newsHtml.append("<link rel='stylesheet' href='https://yourdomain.com/news_styles.css'>");  // CSS 적용
+        newsHtml.append("</head><body>");
+        newsHtml.append("<div class='news-container'>");
+        newsHtml.append("<h2 style='text-align: center;'>📰 해외주식 뉴스 모니터링 결과</h2>");
+    
         for (JsonElement element : items) {
             JsonObject newsItem = element.getAsJsonObject();
-            String title = newsItem.get("title").getAsString().replaceAll("<.*?>", ""); // HTML 태그 제거
+            String title = newsItem.get("title").getAsString().replaceAll("<.*?>", "");
             String link = newsItem.get("link").getAsString();
-            String description = newsItem.get("description").getAsString().replaceAll("<.*?>", ""); // HTML 태그 제거
+            String description = newsItem.get("description").getAsString().replaceAll("<.*?>", "");
             String pubDate = newsItem.get("pubDate").getAsString();
-
-            newsHtml.append("<div style='border-bottom:1px solid #ddd; padding:10px;'>");
-            newsHtml.append("<h3>📌 제목: <a href='" + link + "'>" + title + "</a></h3>");
-            newsHtml.append("<p>📝 설명: " + description + "</p>");
-            newsHtml.append("<p>📅 발행일: " + pubDate + "</p>");
+    
+            newsHtml.append("<div class='news-item'>");
+            newsHtml.append("<a class='news-title' href='" + link + "'>" + title + "</a>");
+            newsHtml.append("<p class='news-description'>" + description + "</p>");
+            newsHtml.append("<p class='news-date'>📅 " + pubDate + "</p>");
             newsHtml.append("</div>");
         }
-
+    
+        newsHtml.append("</div>");
+        newsHtml.append("</body></html>");
+        
         return newsHtml.toString();
     }
 }
