@@ -27,6 +27,13 @@ jobs:
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
 
+      - name: 실행 결과를 Gmail로 전송
+        run: |
+          echo "뉴스 자동 모니터링 결과 파일을 첨부합니다." | mutt -s "자동 뉴스 모니터링 결과" -a output.txt -- byumm315@gmail.com
+        env:
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+
       - name: 실행 결과로 나온 파일을 커밋
         uses: EndBug/add-and-commit@v9
         with:
