@@ -30,7 +30,7 @@ jobs:
         run: |
           java -cp gson-2.10.1.jar:. App_news
         env:
-          KEYWORD: ${{ vars.KEYWORD }}
+          KEYWORD: ${{ secrets.KEYWORD }}
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
 
