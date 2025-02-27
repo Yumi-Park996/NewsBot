@@ -38,13 +38,13 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y mutt
-          echo "set smtp_url=\"smtp://smtp.gmail.com:587\"" >> ~/.muttrc
-          echo "set smtp_user=\"byumm315@gmail.com\"" >> ~/.muttrc
-          echo "set smtp_pass=\"${{ secrets.SMTP_PASSWORD }}\"" >> ~/.muttrc
           echo "set from=\"byumm315@gmail.com\"" >> ~/.muttrc
           echo "set realname=\"뉴스 모니터링 시스템\"" >> ~/.muttrc
-          echo "set ssl_starttls=yes" >> ~/.muttrc
+          echo "set smtp_url=\"smtps://smtp.gmail.com:465\"" >> ~/.muttrc
+          echo "set smtp_pass=\"${{ secrets.SMTP_PASSWORD }}\"" >> ~/.muttrc
           echo "set ssl_force_tls=yes" >> ~/.muttrc
+          echo "set ssl_starttls=yes" >> ~/.muttrc
+          echo "set use_envelope_from=yes" >> ~/.muttrc
 
       - name: 실행 결과를 Gmail로 전송
         run: |
