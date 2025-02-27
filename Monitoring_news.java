@@ -69,13 +69,24 @@ class Monitoring_news {
     }
 
         // JSON 응답을 파싱하고 HTML 형식으로 변환하여 반환
-        private String parseNewsToHtml(String jsonResponse) {
+    private String parseNewsToHtml(String jsonResponse) {
         JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
         JsonArray items = jsonObject.getAsJsonArray("items");
     
         StringBuilder newsHtml = new StringBuilder();
         newsHtml.append("<html><head>");
-        newsHtml.append("<link rel='stylesheet' href='https://Yumi-Park996.github.io/NewsBot/news_styles.css'>");  // CSS 적용
+        
+        // 인라인 스타일 적용
+        newsHtml.append("<style>");
+        newsHtml.append("body { font-family: Arial, sans-serif; background-color: #f9f9f9; color: #333; line-height: 1.6; padding: 20px; }");
+        newsHtml.append(".news-container { max-width: 600px; margin: 0 auto; background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); }");
+        newsHtml.append(".news-item { border-bottom: 1px solid #ddd; padding: 15px 0; }");
+        newsHtml.append(".news-title { font-size: 18px; font-weight: bold; color: #0056b3; text-decoration: none; }");
+        newsHtml.append(".news-title:hover { text-decoration: underline; }");
+        newsHtml.append(".news-description { font-size: 14px; color: #666; margin: 5px 0; }");
+        newsHtml.append(".news-date { font-size: 12px; color: #999; }");
+        newsHtml.append("</style>");
+    
         newsHtml.append("</head><body>");
         newsHtml.append("<div class='news-container'>");
         newsHtml.append("<h2 style='text-align: center;'>📰 해외주식 뉴스 모니터링 결과</h2>");
@@ -96,7 +107,7 @@ class Monitoring_news {
     
         newsHtml.append("</div>");
         newsHtml.append("</body></html>");
-        
+    
         return newsHtml.toString();
     }
 }
