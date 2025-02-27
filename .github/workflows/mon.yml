@@ -3,7 +3,7 @@ name: 뉴스 자동 모니터링
 on:
   workflow_dispatch:  # 수동 실행 가능
   schedule:
-    - cron: "*/30 * * * *"  # 매시간 정각 실행
+    - cron: "0 * * * *"  # 매시간 정각 실행
 
 jobs:
   make-file:
@@ -33,6 +33,11 @@ jobs:
           KEYWORD: ${{ vars.KEYWORD }}
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+
+      - name: 🛠 `mutt` 설치
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mutt
 
       - name: 실행 결과를 Gmail로 전송
         run: |
