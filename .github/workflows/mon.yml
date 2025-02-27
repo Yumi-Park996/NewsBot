@@ -3,7 +3,7 @@ name: 뉴스 자동 모니터링
 on:
   workflow_dispatch:  # 수동 실행 가능
   schedule:
-    - cron: "/10 * * * *"  # 매시간 정각 실행
+    - cron: "*/30 * * * *"  # 30분마다 진행
 
 jobs:
   make-file:
