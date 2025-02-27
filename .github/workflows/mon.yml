@@ -45,7 +45,7 @@ jobs:
             -d '{
                   "sender": { "name": "뉴스 모니터링 시스템", "email": "byumm315@gmail.com" },
                   "to": ['"$TO_EMAILS"'],
-                  "subject": "자동 뉴스 모니터링 결과",
+                  "subject": "[Daily Letter]해외주식 뉴스 레터",
                   "htmlContent": "<p>뉴스 자동 모니터링 결과 파일을 첨부합니다.</p>",
                   "attachment": [
                     {
