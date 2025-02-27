@@ -54,35 +54,28 @@ class Monitoring_news {
         }
     }
 
-    // JSON 응답을 파싱하고 output.txt로 저장
-    private void parseAndSaveNews(String jsonResponse) {
+    // JSON 응답을 파싱하고 HTML 형식으로 변환하여 반환
+    private String parseNewsToHtml(String jsonResponse) {
         JsonObject jsonObject = JsonParser.parseString(jsonResponse).getAsJsonObject();
         JsonArray items = jsonObject.getAsJsonArray("items");
-
-        StringBuilder newsContent = new StringBuilder();
-        newsContent.append("🔹 [자동 뉴스 모니터링 결과]\n\n");
-
+    
+        StringBuilder newsHtml = new StringBuilder();
+        newsHtml.append("<h2>🔹 자동 뉴스 모니터링 결과</h2>");
+    
         for (JsonElement element : items) {
             JsonObject newsItem = element.getAsJsonObject();
             String title = newsItem.get("title").getAsString().replaceAll("<.*?>", ""); // HTML 태그 제거
             String link = newsItem.get("link").getAsString();
             String description = newsItem.get("description").getAsString().replaceAll("<.*?>", ""); // HTML 태그 제거
             String pubDate = newsItem.get("pubDate").getAsString();
-
-            newsContent.append("📌 제목: ").append(title).append("\n");
-            newsContent.append("🔗 링크: ").append(link).append("\n");
-            newsContent.append("📝 설명: ").append(description).append("\n");
-            newsContent.append("📅 발행일: ").append(pubDate).append("\n");
-            newsContent.append("-------------------------------------------------\n");
+    
+            newsHtml.append("<div style='border-bottom:1px solid #ddd; padding:10px;'>");
+            newsHtml.append("<h3>📌 제목: <a href='" + link + "'>" + title + "</a></h3>");
+            newsHtml.append("<p>📝 설명: " + description + "</p>");
+            newsHtml.append("<p>📅 발행일: " + pubDate + "</p>");
+            newsHtml.append("</div>");
         }
-
-        // 파일 저장
-        try {
-            Path outputPath = Path.of("output.txt");
-            Files.writeString(outputPath, newsContent.toString(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-            logger.info("✅ output.txt 파일 저장 완료");
-        } catch (IOException e) {
-            logger.warning("파일 저장 오류: " + e.getMessage());
-        }
+    
+        return newsHtml.toString();
     }
 }
