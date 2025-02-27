@@ -44,7 +44,7 @@ class Monitoring_news {
 
             if (response.statusCode() == 200) {
                 // JSON 응답 파싱 및 파일 저장
-                parseAndSaveNews(response.body());
+                parseNewsToHtml(response.body());
             } else {
                 logger.warning("API 요청 실패: " + response.body());
             }
