@@ -75,7 +75,7 @@ class Monitoring_news {
     
         StringBuilder newsHtml = new StringBuilder();
         newsHtml.append("<html><head>");
-        newsHtml.append("<link rel='stylesheet' href='https://yourdomain.com/news_styles.css'>");  // CSS 적용
+        newsHtml.append("<link rel='stylesheet' href='https://Yumi-Park996.github.io/NewsBot/news_styles.css'>");  // CSS 적용
         newsHtml.append("</head><body>");
         newsHtml.append("<div class='news-container'>");
         newsHtml.append("<h2 style='text-align: center;'>📰 해외주식 뉴스 모니터링 결과</h2>");
