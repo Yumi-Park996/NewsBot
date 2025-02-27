@@ -3,7 +3,7 @@ name: 뉴스 자동 모니터링
 on:
   workflow_dispatch:  # 수동 실행 가능
   schedule:
-    - cron: "*/30 * * * *"  # 30분마다 진행
+    - cron: "0 * * * *"  # 매시간 정각 실행
 
 jobs:
   make-file:
@@ -17,6 +17,10 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
+
+      - name: Gson 라이브러리 다운로드
+        run: |
+          wget https://repo1.maven.org/maven2/com/google/code/gson/gson/2.10.1/gson-2.10.1.jar
 
       - name: Gson 라이브러리 포함하여 컴파일
         run: |
