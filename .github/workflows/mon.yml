@@ -1,9 +1,9 @@
 name: 뉴스 자동 모니터링
 
 on:
-  workflow_dispatch:  # 수동 실행 가능
+  workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"  # 매시간 정각 실행
+    - cron: "0 0 * * *"
 
 jobs:
   make-file:
@@ -34,16 +34,24 @@ jobs:
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
 
+      - name: 🛠 `mutt` 설치
+        run: |
+          sudo apt-get update && sudo apt-get install -y mutt
+
       - name: 🛠 `mutt` SMTP 설정
         run: |
-          echo "set from=\"byumm315@gmail.com\"" >> ~/.muttrc
-          echo "set realname=\"뉴스 모니터링 시스템\"" >> ~/.muttrc
-          echo "set smtp_url=\"smtp://smtp.gmail.com:587\"" >> ~/.muttrc
-          echo "set smtp_pass=\"${{ secrets.SMTP_PASSWORD }}\"" >> ~/.muttrc
-          echo "set smtp_authenticators=\"login\"" >> ~/.muttrc
-          echo "set ssl_force_tls=no" >> ~/.muttrc
-          echo "set ssl_starttls=yes" >> ~/.muttrc
-          echo "set use_envelope_from=yes" >> ~/.muttrc
+          mkdir -p ~/.mutt
+          echo "set from=\"byumm315@gmail.com\"" >> ~/.mutt/muttrc
+          echo "set realname=\"뉴스 모니터링 시스템\"" >> ~/.mutt/muttrc
+          echo "set smtp_url=\"smtp://smtp.gmail.com:587\"" >> ~/.mutt/muttrc
+          echo "set smtp_pass=\"${{ secrets.SMTP_PASSWORD }}\"" >> ~/.mutt/muttrc
+          echo "set smtp_authenticators=\"login\"" >> ~/.mutt/muttrc
+          echo "set ssl_force_tls=no" >> ~/.mutt/muttrc
+          echo "set ssl_starttls=yes" >> ~/.mutt/muttrc
+          echo "set use_envelope_from=yes" >> ~/.mutt/muttrc
+        env:
+          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
       - name: 실행 결과를 Gmail로 전송
         run: |
