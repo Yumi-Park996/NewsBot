@@ -45,9 +45,9 @@ jobs:
             -H "api-key: ${{ secrets.BREVO_API_KEY }}" \
             -H "Content-Type: application/json" \
             -d '{
-                  "sender": { "name": "뉴스 모니터링 시스템", "email": "byumm315@gmail.com" },
+                  "sender": { "name": "Yumi Park", "email": "byumm315@gmail.com" },
                   "to": ['"$TO_EMAILS"'],
-                  "subject": "자동 뉴스 모니터링 결과",
+                  "subject": "[Daily News Letter] 해외주식 소식을 전해드립니다.",
                   "htmlContent": "'"$HTML_CONTENT"'"
                 }'
 
