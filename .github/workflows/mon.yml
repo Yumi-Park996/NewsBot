@@ -50,14 +50,14 @@ jobs:
           echo "set ssl_starttls=yes" >> ~/.mutt/muttrc
           echo "set use_envelope_from=yes" >> ~/.mutt/muttrc
         env:
-          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_USERNAME: "byumm315@gmail.com"
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
       - name: 실행 결과를 Gmail로 전송
         run: |
           echo "뉴스 자동 모니터링 결과 파일을 첨부합니다." | mutt -s "자동 뉴스 모니터링 결과" -a output.txt -- byumm315@gmail.com
         env:
-          SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+          SMTP_USERNAME: "byumm315@gmail.com"
           SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
 
       - name: 실행 결과로 나온 파일을 커밋
