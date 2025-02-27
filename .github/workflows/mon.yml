@@ -52,5 +52,8 @@ jobs:
                 }'
 
         env:
+          KEYWORD: ${{ secrets.KEYWORD }}
+          NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+          NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
           BREVO_RECIPIENTS: ${{ secrets.BREVO_RECIPIENTS }}
