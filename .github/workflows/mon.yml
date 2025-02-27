@@ -20,12 +20,8 @@ jobs:
 
       - name: 컴파일 및 코드 실행
         run: |
-          javac App_news.java
+          javac App_news.java Monitoring_news.java SortType.java
           java App_news
-          javac Monitoring_news.java
-          java Monitoring_news
-          javac SortType.java
-          java SortType
         env:
           KEYWORD: ${{ vars.KEYWORD }}
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
