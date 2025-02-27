@@ -34,10 +34,17 @@ jobs:
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
 
-      - name: 🛠 `mutt` 설치
+      - name: 🛠 `mutt` 설치 및 설정
         run: |
           sudo apt-get update
           sudo apt-get install -y mutt
+          echo "set smtp_url=\"smtp://smtp.gmail.com:587\"" >> ~/.muttrc
+          echo "set smtp_user=\"byumm315@gmail.com\"" >> ~/.muttrc
+          echo "set smtp_pass=\"${{ secrets.SMTP_PASSWORD }}\"" >> ~/.muttrc
+          echo "set from=\"byumm315@gmail.com\"" >> ~/.muttrc
+          echo "set realname=\"뉴스 모니터링 시스템\"" >> ~/.muttrc
+          echo "set ssl_starttls=yes" >> ~/.muttrc
+          echo "set ssl_force_tls=yes" >> ~/.muttrc
 
       - name: 실행 결과를 Gmail로 전송
         run: |
