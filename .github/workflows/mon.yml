@@ -34,36 +34,26 @@ jobs:
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
 
-      - name: 🛠 `mutt` 설치
+      - name: Brevo SMTP API로 이메일 전송
         run: |
-          sudo apt-get update && sudo apt-get install -y mutt
+          TO_EMAILS=$(echo "${{ secrets.BREVO_RECIPIENTS }}" | awk -F ',' '{for (i=1; i<=NF; i++) print "{\"email\": \""$i"\"}"}' | paste -sd "," -)
 
-      - name: 🛠 `mutt` SMTP 설정
-        run: |
-          mkdir -p ~/.mutt
-          echo "set from=\"byumm315@gmail.com\"" >> ~/.mutt/muttrc
-          echo "set realname=\"뉴스 모니터링 시스템\"" >> ~/.mutt/muttrc
-          echo "set smtp_url=\"smtp://smtp.gmail.com:587\"" >> ~/.mutt/muttrc
-          echo "set smtp_pass=\"${{ secrets.SMTP_PASSWORD }}\"" >> ~/.mutt/muttrc
-          echo "set smtp_authenticators=\"login\"" >> ~/.mutt/muttrc
-          echo "set ssl_force_tls=no" >> ~/.mutt/muttrc
-          echo "set ssl_starttls=yes" >> ~/.mutt/muttrc
-          echo "set use_envelope_from=yes" >> ~/.mutt/muttrc
+          curl -X POST "https://api.brevo.com/v3/smtp/email" \
+            -H "accept: application/json" \
+            -H "api-key: ${{ secrets.BREVO_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d '{
+                  "sender": { "name": "뉴스 모니터링 시스템", "email": "byumm315@gmail.com" },
+                  "to": ['"$TO_EMAILS"'],
+                  "subject": "자동 뉴스 모니터링 결과",
+                  "htmlContent": "<p>뉴스 자동 모니터링 결과 파일을 첨부합니다.</p>",
+                  "attachment": [
+                    {
+                      "content": "'"$(base64 -w 0 output.txt)"'",
+                      "name": "output.txt"
+                    }
+                  ]
+                }'
         env:
-          SMTP_USERNAME: "byumm315@gmail.com"
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-
-      - name: 실행 결과를 Gmail로 전송
-        run: |
-          echo "뉴스 자동 모니터링 결과 파일을 첨부합니다." | mutt -s "자동 뉴스 모니터링 결과" -a output.txt -- byumm315@gmail.com
-        env:
-          SMTP_USERNAME: "byumm315@gmail.com"
-          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
-
-      - name: 실행 결과로 나온 파일을 커밋
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: ${{ github.actor }}
-          author_email: ${{ github.actor }}@users.noreply.github.com
-          message: "자동 뉴스 모니터링"
-          add: "."
+          BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
+          BREVO_RECIPIENTS: ${{ secrets.BREVO_RECIPIENTS }}
