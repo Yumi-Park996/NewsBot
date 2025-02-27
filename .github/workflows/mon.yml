@@ -3,7 +3,7 @@ name: 뉴스 자동 모니터링
 on:
   workflow_dispatch:  # 수동 실행 가능
   schedule:
-    - cron: "0 * * * *"  # 매시간 정각 실행
+    - cron: "/10 * * * *"  # 매시간 정각 실행
 
 jobs:
   make-file:
@@ -18,10 +18,13 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: 컴파일 및 코드 실행
+      - name: Gson 라이브러리 포함하여 컴파일
         run: |
-          javac App_news.java Monitoring_news.java SortType.java
-          java App_news
+          javac -cp gson-2.10.1.jar App_news.java Monitoring_news.java SortType.java
+
+      - name: Gson 포함하여 실행
+        run: |
+          java -cp gson-2.10.1.jar:. App_news
         env:
           KEYWORD: ${{ vars.KEYWORD }}
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
