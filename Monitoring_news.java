@@ -23,36 +23,38 @@ class Monitoring_news {
 
     // 뉴스 검색 및 output.txt 저장
     public void getNews(String keyword, int display, int start, SortType sort) {
-        String url = "https://openapi.naver.com/v1/search/news.json";
-        String encodedKeyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
-        String params = "query=%s&display=%d&start=%d&sort=%s".formatted(
-                encodedKeyword, display, start, sort.value
-        );
-
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url + "?" + params))
-                .GET()
-                .header("X-Naver-Client-Id", System.getenv("NAVER_CLIENT_ID"))
-                .header("X-Naver-Client-Secret", System.getenv("NAVER_CLIENT_SECRET"))
-                .build();
-
-        try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            // 로그 출력
-            logger.info("HTTP 상태 코드: " + response.statusCode());
-
-            if (response.statusCode() == 200) {
-                // JSON 응답 파싱 및 파일 저장
-                parseNewsToHtml(response.body());
-            } else {
-                logger.warning("API 요청 실패: " + response.body());
-            }
-
-        } catch (IOException | InterruptedException e) {
-            logger.warning("오류 발생: " + e.getMessage());
-        }
+    if (keyword == null || keyword.isEmpty()) {
+        throw new IllegalArgumentException("환경 변수 'KEYWORD'가 설정되지 않았습니다.");
     }
+
+    String url = "https://openapi.naver.com/v1/search/news.json";
+    String encodedKeyword = URLEncoder.encode(keyword, StandardCharsets.UTF_8);
+    String params = "query=%s&display=%d&start=%d&sort=%s".formatted(
+            encodedKeyword, display, start, sort.value
+    );
+
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(url + "?" + params))
+            .GET()
+            .header("X-Naver-Client-Id", System.getenv("NAVER_CLIENT_ID"))
+            .header("X-Naver-Client-Secret", System.getenv("NAVER_CLIENT_SECRET"))
+            .build();
+
+    try {
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        logger.info("HTTP 상태 코드: " + response.statusCode());
+
+        if (response.statusCode() == 200) {
+            parseNewsToHtml(response.body());
+        } else {
+            logger.warning("API 요청 실패: " + response.body());
+        }
+
+    } catch (IOException | InterruptedException e) {
+        logger.warning("오류 발생: " + e.getMessage());
+    }
+}
 
     // JSON 응답을 파싱하고 HTML 형식으로 변환하여 반환
     private String parseNewsToHtml(String jsonResponse) {
