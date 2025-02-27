@@ -3,7 +3,7 @@ name: 뉴스 자동 모니터링
 on:
   workflow_dispatch:  # 수동 실행 가능
   schedule:
-    - cron: "0 * * * *"  # 매시간 정각 실행
+    - cron: "0 0 * * *"  # 매시간 정각 실행
 
 jobs:
   make-file:
@@ -34,15 +34,14 @@ jobs:
           NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
           NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
 
-      - name: 🛠 `mutt` 설치 및 설정
+      - name: 🛠 `mutt` SMTP 설정
         run: |
-          sudo apt-get update
-          sudo apt-get install -y mutt
           echo "set from=\"byumm315@gmail.com\"" >> ~/.muttrc
           echo "set realname=\"뉴스 모니터링 시스템\"" >> ~/.muttrc
-          echo "set smtp_url=\"smtps://smtp.gmail.com:465\"" >> ~/.muttrc
+          echo "set smtp_url=\"smtp://smtp.gmail.com:587\"" >> ~/.muttrc
           echo "set smtp_pass=\"${{ secrets.SMTP_PASSWORD }}\"" >> ~/.muttrc
-          echo "set ssl_force_tls=yes" >> ~/.muttrc
+          echo "set smtp_authenticators=\"login\"" >> ~/.muttrc
+          echo "set ssl_force_tls=no" >> ~/.muttrc
           echo "set ssl_starttls=yes" >> ~/.muttrc
           echo "set use_envelope_from=yes" >> ~/.muttrc
 
