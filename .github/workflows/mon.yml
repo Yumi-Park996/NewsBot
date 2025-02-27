@@ -37,6 +37,8 @@ jobs:
       - name: Brevo SMTP API로 HTML 이메일 전송
         run: |
           TO_EMAILS=$(echo "${{ secrets.BREVO_RECIPIENTS }}" | awk -F ',' '{for (i=1; i<=NF; i++) print "{\"email\": \""$i"\"}"}' | paste -sd "," -)
+          
+          HTML_CONTENT=$(java -cp gson-2.10.1.jar:. App_news)
       
           curl -X POST "https://api.brevo.com/v3/smtp/email" \
             -H "accept: application/json" \
@@ -45,9 +47,10 @@ jobs:
             -d '{
                   "sender": { "name": "뉴스 모니터링 시스템", "email": "byumm315@gmail.com" },
                   "to": ['"$TO_EMAILS"'],
-                  "subject": "[Daily Letter] 해외주식 뉴스 트렌드 알림",
-                  "htmlContent": "'"$(java -cp gson-2.10.1.jar:. App_news)"'"
+                  "subject": "자동 뉴스 모니터링 결과",
+                  "htmlContent": "'"$HTML_CONTENT"'"
                 }'
+
         env:
           BREVO_API_KEY: ${{ secrets.BREVO_API_KEY }}
           BREVO_RECIPIENTS: ${{ secrets.BREVO_RECIPIENTS }}
