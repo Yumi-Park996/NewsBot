@@ -32,23 +32,4 @@ src/
 ├── llm/
 │   ├── LLM.java                    // LLM 호출 및 응답 처리
 ```
-### Table
-
-파일명	역할
-AppNews.java	메인 실행 (전체 조합)
-ConfigLoader.java	환경변수 로드 및 설정 관리
-NewsItem.java	뉴스 아이템 데이터 클래스 (title, link, description 등)
-SortType.java	정렬 타입 enum
-NewsFetcher.java	네이버 뉴스 API 호출 및 데이터 수집
-NewsFilter.java	특정 언론사 필터링 기능
-NewsDeduplicator.java	기사 중복 제거 (제목, 유사도 기반)
-NewsFormatter.java	HTML 뉴스레터 변환
-NewsletterSender.java	Brevo API로 이메일 발송
-LLMProcessor.java	(선택) LLM 활용 뉴스 요약, 분석, 투자 인사이트 생성
-HttpClientHelper.java	HTTP 공통 유틸 (헤더, 요청 등 관리)
-IWebClient/WebClient	기본 웹 요청 처리 인터페이스 및 구현체
-Slack	(옵션) 슬랙 알림 전송
-LLM	(옵션) LLM 호출 및 요약/분석 처리
-
-
 ![image](https://github.com/user-attachments/assets/2faa441f-f4dc-4052-a59f-64b22a5626e3)
