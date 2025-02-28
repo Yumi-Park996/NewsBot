@@ -10,6 +10,7 @@
 ![image](https://github.com/user-attachments/assets/2faa441f-f4dc-4052-a59f-64b22a5626e3)
 
 <br>
+
 ## 📧 NewsBot Explanation (English Version)
 
 **NewsBot** is a **Java-based application** developed by **Yumi Park** on **February 27, 2025**.  
